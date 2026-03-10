@@ -15,4 +15,10 @@ dependencies = [
     "langchain-core>=1.2.16",
     "langgraph>=1.0.10",
     "jsonpath>=0.82.2",
+    "langchain-groq",
+]
+
+[tool.uv.workspace]
+members = [
+    "search-agent-using-react-architecture",
 ]
