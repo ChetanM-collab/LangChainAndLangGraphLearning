@@ -8,6 +8,11 @@ The first starting point in this repo is `hello-world/main.py`: a minimal “hel
 python hello-world/main.py
 ```
 
+You’ll also need a `.env` file at the repo root with your own keys, for example:
+
+- **OpenAI**: `OPENAI_API_KEY=...`
+- **LangSmith**: `LANGSMITH_TRACING=true`, `LANGSMITH_ENDPOINT=...`, `LANGSMITH_API_KEY=...`, `LANGSMITH_PROJECT=...`
+
 ![LangChain Logo](/static/LangChain-logo.svg)
 ![LangGraph Logo](/static/LangGraph%20wordmark%20-%20dark.svg)
 

@@ -2,6 +2,12 @@
 
 This folder contains my experiments building a simple search-style agent with the **ReAct (Reason + Act)** pattern.
 
+This project expects a local `.env` with:
+
+- **OpenAI**: `OPENAI_API_KEY=...`
+- **LangSmith**: `LANGSMITH_TRACING=true`, `LANGSMITH_ENDPOINT=...`, `LANGSMITH_API_KEY=...`, `LANGSMITH_PROJECT=...`
+- **Tavily**: `TAVILY_API_KEY=...`
+
 ### What I did
 - **`main.py` – fake search tool**  
   - Defined a fake `search_tool` using `@tool` so the agent can “search” (currently just prints and returns a stub string).  
