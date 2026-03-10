@@ -1,5 +1,5 @@
 [project]
-name = "langchain-course"
+name = "structured-output"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -7,19 +7,12 @@ requires-python = ">=3.13"
 dependencies = [
     "black>=26.1.0",
     "isort>=8.0.1",
-    "jsonpatch==1.33",
+    "jsonpatch>=1.33",
     "langchain[all]>=1.2.10",
-    "langchain-ollama>=1.0.1",
     "langchain-openai>=1.1.10",
+    "langchain-tavily>=0.2.17",
     "python-dotenv>=1.2.1",
+    "tavily>=1.1.0",
     "langchain-core>=1.2.16",
     "langgraph>=1.0.10",
-    "jsonpath>=0.82.2",
-    "langchain-groq",
-]
-
-[tool.uv.workspace]
-members = [
-    "search-agent-using-react-architecture",
-    "structured-output",
 ]
