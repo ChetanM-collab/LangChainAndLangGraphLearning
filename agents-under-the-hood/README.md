@@ -1,23 +1,34 @@
 ## Agents under the hood
 
-This folder explores **how LangChain agents work internally** by implementing the agent loop manually instead of using high-level helpers like `create_agent` or `create_react_agent`.
+This folder explores **how LangChain agents work internally** by implementing the agent loop manually at two abstraction levels, instead of using helpers like `create_agent` or `create_react_agent`.
 
 Use a local `.env` with LangSmith keys if you want tracing; the model is Ollama (`qwen3:1.7b`).
 
+### Files
+
+| File | Approach |
+|------|----------|
+| `layer1-agent-loop-langchain-tool-calling.py` | LangChain tool-calling: `@tool`, `init_chat_model`, `llm.bind_tools`, `ToolMessage` |
+| `layer2-agent-loop-raw-function-calling.py` | Raw Ollama API: plain Python functions, JSON tool schemas, `ollama.chat(tools=...)` |
+
 ### What I did
 
-- **Defined tools** with `@tool`:
+- **Defined tools** (same semantics in both layers):
   - `get_product_price(product)` — returns catalog prices (laptop, headphones, keyboard).
   - `apply_discount(price, discount_tier)` — applies bronze/silver/gold discount tiers.
-- **Implemented the agent loop manually** in `layer1.py`:
-  - Used `init_chat_model` and `llm.bind_tools(tools)` to give the model tool-calling capability.
-  - Wrote a loop that: invokes the LLM → checks for `tool_calls` → if none, returns the final answer → otherwise runs the selected tool, appends a `ToolMessage`, and repeats.
-- **Traced runs** with LangSmith (`@traceable`) to inspect the agent’s behavior.
-- **Ran** a sample question: “What is the price of a laptop with a gold discount?” to see the multi-step reasoning (get price → apply discount → answer).
+- **Layer 1 (LangChain)**:
+  - Used `@tool`, `init_chat_model`, and `llm.bind_tools(tools)`.
+  - Wrote a loop: LLM invoke → `tool_calls`? → execute tool → append `ToolMessage` → repeat.
+- **Layer 2 (raw)**:
+  - Defined tool schemas by hand as JSON (OpenAI-style function format).
+  - Called `ollama.chat(model=..., tools=tools_for_llm)` and processed `message.tool_calls` directly.
+  - Used plain dict messages (`{"role": "tool", "content": str(observation)}`).
+- **Traced runs** with LangSmith (`@traceable`) in both layers.
+- **Ran** “What is the price of a laptop with a gold discount?” to see multi-step reasoning (get price → apply discount → answer).
 
 ### What I learned
 
-- The agent loop is essentially: **LLM invoke → tool calls? → execute tools → append `ToolMessage` → repeat until no tool calls**.
-- `bind_tools` exposes the tool schemas to the model so it can request tool calls in its response.
-- `ToolMessage` carries the tool result back into the conversation for the next LLM turn.
-- Building this manually helps understand what higher-level APIs like `create_agent` are doing internally.
+- The agent loop is the same pattern at any layer: **LLM invoke → tool calls? → execute tools → append tool result → repeat until no tool calls**.
+- LangChain’s `bind_tools` and `@tool` translate tools into the provider’s function-calling schema under the hood.
+- The raw Ollama layer shows what’s actually sent: JSON tool definitions and `role: tool` messages.
+- Building both layers clarifies what LangChain abstracts away (message types, tool schema, `tool_call_id` handling).
