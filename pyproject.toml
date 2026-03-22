@@ -23,4 +23,5 @@ members = [
     "search-agent-using-react-architecture",
     "structured-output",
     "agents-under-the-hood",
+    "rag-gist",
 ]
