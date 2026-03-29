@@ -24,4 +24,5 @@ members = [
     "structured-output",
     "agents-under-the-hood",
     "rag-gist",
+    "document-helper",
 ]

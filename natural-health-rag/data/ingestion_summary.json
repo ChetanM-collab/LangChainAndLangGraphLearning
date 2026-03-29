@@ -1,0 +1,10 @@
+{
+  "total_chunks": 1631,
+  "sources": {
+    "NIH_ODS": 759,
+    "NCCIH": 420,
+    "PubMed": 400,
+    "ClinicalTrials": 52,
+    "WHO_EMA_PDF": 0
+  }
+}
